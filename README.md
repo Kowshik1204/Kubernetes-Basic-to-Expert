@@ -94,6 +94,69 @@ These steps help in installing cluster within  our instance region
 
 ```kops validate cluster demok8scluster.k8s.local```
 
+```kubectl get nodes ``` will list the running nodes in the cluster
+
+```vim my-first-pod.yaml``` Opens the Yaml file for the pod created
+
+##Basic YAML script for the pod
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+````
+
+
+```kubectl apply -f my-first-pod.yaml``` Apply the pod changes and runs the pod
+
+```kubectl get pods``` will lists the running pods in the node
+
+```kubectl get pods -o wide``` returns the complete information about pod
+
+```curl https://<publicip>:port``` Connects to the node
+
+```kubectl get deploy``` will lists the no.of deployed files
+
+```vim deployment.yaml``` Opens the yaml file for the deployment creation
+
+##Basic Yaml script for deployment
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+
+```kubectl apply -f deployment.yaml``` Apply the changes to deployment file and will run it
+
+```kubectl get rs``` will list all created replicas by controller.
+
 
 
 
