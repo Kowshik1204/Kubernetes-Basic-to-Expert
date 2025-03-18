@@ -9,43 +9,70 @@ Dependencies required for this setup are:
 
 **Install Correct Repositories for Ubuntu**
 
-```sudo mkdir -p /etc/apt/keyrings```
+```
+sudo mkdir -p /etc/apt/keyrings
+```
 
-```curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo tee /etc/apt/keyrings/kubernetes-apt-keyring.asc > /dev/null```
+```
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo tee /etc/apt/keyrings/kubernetes-apt-keyring.asc > /dev/null
+```
 
-```echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list```
+```
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+```
 
 **Update package list and Install Kubernetes Components**
 
-```sudo apt-get update```
+```
+sudo apt-get update
+```
 
-```sudo apt install -y kubelet kubeadm kubectl```
+```
+sudo apt install -y kubelet kubeadm kubectl
+```
 
-```sudo apt update && sudo apt install -y python3-pip```
+```
+sudo apt update && sudo apt install -y python3-pip
+```
 
 
 **Install AWS CLI which is unavailable on Ubuntu latest version**
 
-```curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"```
+```
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+```
 
-```unzip awscliv2.zip```
+```
+unzip awscliv2.zip
+```
 
-```sudo ./aws/install```
+```
+sudo ./aws/install
+```
 
-```aws  --version```
+```
+aws  --version
+```
 
-```source awscli-venv/bin/activate   ##AWS CLI environment should activated```
-
+```
+source awscli-venv/bin/activate   ##AWS CLI environment should activated
+```
 
 If there is any error regarding unzip command unavailable use the unzip command and try again
 apt install unzip 
 
 
 **Verify Kubernetes Installation**
-```kubectl version -client && kubeadm version```
+
+```
+kubectl version -client && kubeadm version
+```
 
 **Configure AWS on the Instance**
-```aws configure```
+
+```
+aws configure
+```
 
 Enter the reuired Access Keys for AWS initialisations which are available in AWS profile and security
  1. AWS Access Key ID
@@ -55,22 +82,39 @@ Enter the reuired Access Keys for AWS initialisations which are available in AWS
 
 **Install KOPS**
 
-```curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64```
+```
+curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+```
 
-```chmod +x kops-linux-amd64```
+```
+chmod +x kops-linux-amd64
+```
 
-```sudo mv kops-linux-amd64 /usr/local/bin/kops```
+```
+sudo mv kops-linux-amd64 /usr/local/bin/kops
+```
 
 ##verify kops installation
-```kops version```
 
-```export PATH="$PATH:/home/ubuntu/.local/bin/"```
+```
+kops version
+```
 
-```echo 'export PATH="$PATH:/home/ubuntu/.local/bin/"' >> ~/.bashrc```
+```
+export PATH="$PATH:/home/ubuntu/.local/bin/"
+```
 
-```source ~/.bashrc```
+```
+echo 'export PATH="$PATH:/home/ubuntu/.local/bin/"' >> ~/.bashrc
+```
 
-```echo $PATH```
+```
+source ~/.bashrc
+```
+
+```
+echo $PATH
+```
 
 
 **Kubernetes Cluster Installation**
@@ -78,25 +122,43 @@ These steps help in installing cluster within  our instance region
 
 **Creating S3 buckets for storing KOPS objects**
 
-```aws s3api create-bucket --bucket kops-kowshik-storage --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1```
+```
+aws s3api create-bucket --bucket kops-kowshik-storage --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
+```
 
 **Create Cluster**
 
-```kops create cluster --name=demok8scluster.k8s.local --state=s3://kops-kowshik-storage --zones=ap-south-1a --node-count=1 --node-size=t3.medium master-size=t3.medium master-volume-size=8  --node-volume-size=8```
+```
+kops create cluster --name=demok8scluster.k8s.local --state=s3://kops-kowshik-storage --zones=ap-south-1a --node-count=1 --node-size=t3.medium master-size=t3.medium master-volume-size=8  --node-volume-size=8
+```
 
-```kops edit cluster myfirstcluster.k8s.local```
+```
+kops edit cluster myfirstcluster.k8s.local
+```
 
-```export KOPS_STATE_STORE=s3://kops-kowshik-storage```
+```
+export KOPS_STATE_STORE=s3://kops-kowshik-storage
+```
 
-```kops update cluster demok8scluster.k8s.local --yes --state=s3://kops-kowshik-storage```
+```
+kops update cluster demok8scluster.k8s.local --yes --state=s3://kops-kowshik-storage
+```
 
 ##This will update the storage as local storage which takes 10-15 minutes and verify the cluster using the below command
 
-```kops validate cluster demok8scluster.k8s.local```
+```
+kops validate cluster demok8scluster.k8s.local
+```
 
-```kubectl get nodes ``` will list the running nodes in the cluster
+```
+kubectl get nodes
+```
+will list the running nodes in the cluster
 
-```vim my-first-pod.yaml``` Opens the Yaml file for the pod created
+```
+vim my-first-pod.yaml
+```
+Opens the Yaml file for the pod created
 
 ##Basic YAML script for the pod
 
@@ -114,17 +176,35 @@ spec:
 ````
 
 
-```kubectl apply -f my-first-pod.yaml``` Apply the pod changes and runs the pod
+```
+kubectl apply -f my-first-pod.yaml
+```
+Apply the pod changes and runs the pod
 
-```kubectl get pods``` will lists the running pods in the node
+```
+kubectl get pods
+```
+will lists the running pods in the node
 
-```kubectl get pods -o wide``` returns the complete information about pod
+```
+kubectl get pods -o wide
+```
+returns the complete information about pod
 
-```curl https://<publicip>:port``` Connects to the node
+```
+curl https://<publicip>:port
+```
+Connects to the node
 
-```kubectl get deploy``` will lists the no.of deployed files
+```
+kubectl get deploy
+```
+will lists the no.of deployed files
 
-```vim deployment.yaml``` Opens the yaml file for the deployment creation
+```
+vim deployment.yaml
+```
+Opens the yaml file for the deployment creation
 
 ##Basic Yaml script for deployment
 
@@ -153,9 +233,15 @@ spec:
 ```
 
 
-```kubectl apply -f deployment.yaml``` Apply the changes to deployment file and will run it
+```
+kubectl apply -f deployment.yaml
+```
+Apply the changes to deployment file and will run it
 
-```kubectl get rs``` will list all created replicas by controller.
+```
+kubectl get rs
+```
+will list all created replicas by controller.
 
 
 
