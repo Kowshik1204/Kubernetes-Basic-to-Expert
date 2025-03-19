@@ -65,7 +65,7 @@ apt install unzip
 **Verify Kubernetes Installation**
 
 ```
-kubectl version -client && kubeadm version
+kubectl version --client && kubeadm version
 ```
 
 **Configure AWS on the Instance**
