@@ -156,7 +156,7 @@ kubectl get nodes
 will list the running nodes in the cluster
 
 ```
-vim my-first-pod.yaml
+vim pod.yaml
 ```
 Opens the Yaml file for the pod created
 
@@ -176,6 +176,11 @@ spec:
 ````
 
 This creates a private pod which is accessible with in the cluster. To expose it to the external ip we have to attach either load balancer or node port service to this pod using a Yaml file
+
+```
+vim service.yaml
+```
+
 ###Basic YAML script for the service
 
 ```
@@ -194,9 +199,9 @@ spec:
 ```
 
 ```
-kubectl apply -f my-first-pod.yaml
+kubectl apply -f pod.yaml && kubectl apply -f service.yaml
 ```
-Apply the pod changes and runs the pod
+Apply the pod changes and runs the pod and services
 
 ```
 kubectl get pods
@@ -209,7 +214,13 @@ kubectl get pods -o wide
 returns the complete information about pod
 
 ```
-curl https://<publicip>:port
+kubectl get svc
+```
+will lists the running services in the node
+
+
+```
+curl https://<nodeport public ip> or <loadbalancer>:port
 ```
 Connects to the node
 
