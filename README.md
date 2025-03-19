@@ -222,7 +222,13 @@ will lists the running services in the node
 ```
 curl https://<nodeport public ip> or <loadbalancer>:port
 ```
-Connects to the node
+Connects to the node within the cluster
+
+To connect using external browser
+
+```
+http://<nodeport public ip>
+```
 
 ```
 kubectl get deploy
