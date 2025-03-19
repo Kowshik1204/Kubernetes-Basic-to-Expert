@@ -129,7 +129,7 @@ aws s3api create-bucket --bucket kops-kowshik-storage --region ap-south-1 --crea
 **Create Cluster**
 
 ```
-kops create cluster --name=demok8scluster.k8s.local --state=s3://kops-kowshik-storage --zones=ap-south-1a --node-count=1 --node-size=t3.medium master-size=t3.medium master-volume-size=8  --node-volume-size=8
+kops create cluster --name=demok8scluster.k8s.local --state=s3://kops-kowshik-storage --zones=ap-south-1a --node-count=1 --node-size=t3.medium --master-size=t3.medium --master-volume-size=8  --node-volume-size=8
 ```
 
 ```
