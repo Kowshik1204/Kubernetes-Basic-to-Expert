@@ -175,6 +175,23 @@ spec:
     - containerPort: 80
 ````
 
+This creates a private pod which is accessible with in the cluster. To expose it to the external ip we have to attach either load balancer or node port service to this pod using a Yaml file
+###Basic YAML script for the service
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx  # Matches pods with label app=nginx
+  ports:
+    - protocol: TCP
+      port: 80  # Service Port
+      targetPort: 80  # Pod Port
+  type: NodePort  # Exposes service externally
+```
 
 ```
 kubectl apply -f my-first-pod.yaml
