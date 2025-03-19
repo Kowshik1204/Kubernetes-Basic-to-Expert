@@ -133,7 +133,7 @@ kops create cluster --name=demok8scluster.k8s.local --state=s3://kops-kowshik-st
 ```
 
 ```
-kops edit cluster myfirstcluster.k8s.local
+kops edit cluster demok8scluster.k8s.local
 ```
 
 ```
